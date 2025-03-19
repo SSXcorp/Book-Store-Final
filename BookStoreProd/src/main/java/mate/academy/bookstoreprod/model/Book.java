@@ -13,7 +13,6 @@ import lombok.ToString;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
-
 @Entity
 @Table(name = "books")
 @Getter
@@ -35,4 +34,5 @@ public class Book {
     private BigDecimal price;
     private String description;
     private String coverImage;
+    private boolean is_deleted;
 }
