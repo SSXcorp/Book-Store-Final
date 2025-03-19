@@ -34,5 +34,5 @@ public class Book {
     private BigDecimal price;
     private String description;
     private String coverImage;
-    private boolean is_deleted;
+    private boolean isDeleted;
 }
