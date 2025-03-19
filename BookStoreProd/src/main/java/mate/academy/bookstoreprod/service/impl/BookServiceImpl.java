@@ -19,10 +19,6 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public List<Book> findAll() {
-        List<Book> books = bookRepository.findAll();
-        if (books.isEmpty()) {
-            throw new RuntimeException("No books found");
-        }
-        return books;
+        return bookRepository.findAll();
     }
 }
