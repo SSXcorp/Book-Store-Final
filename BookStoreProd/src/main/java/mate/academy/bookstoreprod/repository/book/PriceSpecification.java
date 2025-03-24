@@ -18,7 +18,8 @@ public class PriceSpecification implements SpecificationProvider<Book> {
     public Specification<Book> getSpecification(String[] prices) {
         BigDecimal[] priceConverted = parsePrices(prices);
         return (root, query, criteriaBuilder) -> {
-            Predicate predicate = criteriaBuilder.between(root.get("price"), priceConverted[0], priceConverted[1]);
+            Predicate predicate = criteriaBuilder.between(root.get("price"),
+                    priceConverted[0], priceConverted[1]);
             return criteriaBuilder.and(predicate);
         };
     }

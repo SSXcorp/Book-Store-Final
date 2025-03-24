@@ -1,6 +1,5 @@
 package mate.academy.bookstoreprod.dto;
 
-import java.math.BigDecimal;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
