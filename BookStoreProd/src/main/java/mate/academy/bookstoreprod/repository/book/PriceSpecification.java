@@ -9,18 +9,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class PriceSpecification implements SpecificationProvider<Book> {
-    private static final String price = "price";
+    private static final String PRICE = "price";
 
     @Override
     public String getKey() {
-        return price;
+        return PRICE;
     }
 
     @Override
     public Specification<Book> getSpecification(String[] prices) {
         BigDecimal[] priceConverted = parsePrices(prices);
         return (root, query, criteriaBuilder) -> {
-            Predicate predicate = criteriaBuilder.between(root.get(price),
+            Predicate predicate = criteriaBuilder.between(root.get(PRICE),
                     priceConverted[0], priceConverted[1]);
             return criteriaBuilder.and(predicate);
         };
