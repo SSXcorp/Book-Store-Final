@@ -5,9 +5,14 @@ import mate.academy.bookstoreprod.dto.BookDto;
 import mate.academy.bookstoreprod.dto.CreateBookRequestDto;
 
 public interface BookService {
-    BookDto save(CreateBookRequestDto book);
 
     List<BookDto> findAll();
 
     BookDto findById(Long id);
+
+    BookDto save(CreateBookRequestDto book);
+
+    BookDto updateById(Long id, CreateBookRequestDto book);
+
+    void deleteById(Long id);
 }
