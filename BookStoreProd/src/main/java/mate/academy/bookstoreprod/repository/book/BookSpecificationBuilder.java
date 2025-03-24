@@ -11,21 +11,26 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class BookSpecificationBuilder implements SpecificationBuilder<Book> {
+    private static final String author = "author";
+    private static final String price = "price";
+    private static final String title = "title";
+    private static final int TWO = 2;
+    private static final int ZERO = 0;
     private final SpecificationProviderManager<Book> specificationProviderManager;
 
     @Override
     public Specification<Book> build(BookSearchParametersDto parameters) {
         Specification<Book> spec = Specification.where(null);
-        if (parameters.getTitle() != null && parameters.getTitle().length > 0) {
-            spec = spec.and(specificationProviderManager.getSpecificationProvider("title")
+        if (parameters.getTitle() != null && parameters.getTitle().length > ZERO) {
+            spec = spec.and(specificationProviderManager.getSpecificationProvider(title)
                     .getSpecification(parameters.getTitle()));
         }
-        if (parameters.getAuthor() != null && parameters.getAuthor().length > 0) {
-            spec = spec.and(specificationProviderManager.getSpecificationProvider("author")
+        if (parameters.getAuthor() != null && parameters.getAuthor().length > ZERO) {
+            spec = spec.and(specificationProviderManager.getSpecificationProvider(author)
                     .getSpecification(parameters.getAuthor()));
         }
-        if (parameters.getPrice() != null && parameters.getPrice().length == 2) {
-            spec = spec.and(specificationProviderManager.getSpecificationProvider("price")
+        if (parameters.getPrice() != null && parameters.getPrice().length == TWO) {
+            spec = spec.and(specificationProviderManager.getSpecificationProvider(price)
                     .getSpecification(parameters.getPrice()));
         }
         return spec;
