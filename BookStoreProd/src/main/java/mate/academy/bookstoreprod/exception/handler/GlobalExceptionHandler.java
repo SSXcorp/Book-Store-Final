@@ -20,12 +20,6 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(NullPointerException.class)
-    public ResponseEntity<String> handleNullPointerExceptions(NullPointerException ex) {
-        return new ResponseEntity<>("Null pointer exception occurred",
-                HttpStatus.INTERNAL_SERVER_ERROR);
-    }
-
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleEntityNotFoundExceptions(EntityNotFoundException ex) {
         return new ResponseEntity<>("Entity not found exception occurred",
