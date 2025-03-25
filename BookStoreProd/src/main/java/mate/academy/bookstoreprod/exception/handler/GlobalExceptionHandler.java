@@ -16,13 +16,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleAllExceptions(Exception ex) {
-        return new ResponseEntity<>("An unexpected error occurred",
+        return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleEntityNotFoundExceptions(EntityNotFoundException ex) {
-        return new ResponseEntity<>("Entity not found exception occurred",
+        return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.NOT_FOUND);
     }
 
@@ -43,7 +43,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(EntityAlreadyExistsException.class)
     public ResponseEntity<String> handleEntityAlreadyExistsExceptions(
             EntityAlreadyExistsException ex) {
-        return new ResponseEntity<>("Entity already exists exception occurred",
+        return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.BAD_REQUEST);
     }
 }
