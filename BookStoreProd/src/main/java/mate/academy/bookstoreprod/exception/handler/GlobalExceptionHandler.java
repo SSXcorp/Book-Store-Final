@@ -16,21 +16,25 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleAllExceptions(Exception ex) {
-        return new ResponseEntity<>("An unexpected error occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("An unexpected error occurred",
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(NullPointerException.class)
     public ResponseEntity<String> handleNullPointerExceptions(NullPointerException ex) {
-        return new ResponseEntity<>("Null pointer exception occurred", HttpStatus.INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>("Null pointer exception occurred",
+                HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<String> handleEntityNotFoundExceptions(EntityNotFoundException ex) {
-        return new ResponseEntity<>("Entity not found exception occurred", HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>("Entity not found exception occurred",
+                HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<List<String>> handleValidationExceptions(MethodArgumentNotValidException ex) {
+    public ResponseEntity<List<String>> handleValidationExceptions(
+            MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult()
                 .getAllErrors().stream()
                 .map(objectError -> {
@@ -43,7 +47,9 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(EntityAlreadyExistsException.class)
-    public ResponseEntity<String> handleEntityAlreadyExistsExceptions(EntityAlreadyExistsException ex) {
-        return new ResponseEntity<>("Entity already exists exception occurred", HttpStatus.BAD_REQUEST);
+    public ResponseEntity<String> handleEntityAlreadyExistsExceptions(
+            EntityAlreadyExistsException ex) {
+        return new ResponseEntity<>("Entity already exists exception occurred",
+                HttpStatus.BAD_REQUEST);
     }
 }
