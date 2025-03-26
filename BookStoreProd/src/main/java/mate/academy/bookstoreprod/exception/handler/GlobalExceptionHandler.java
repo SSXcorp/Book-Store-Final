@@ -1,5 +1,6 @@
 package mate.academy.bookstoreprod.exception.handler;
 
+import io.swagger.v3.oas.annotations.Hidden;
 import java.util.List;
 import java.util.stream.Collectors;
 import mate.academy.bookstoreprod.exception.EntityAlreadyExistsException;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
+@Hidden
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
