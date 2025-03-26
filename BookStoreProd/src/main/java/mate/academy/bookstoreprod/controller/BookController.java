@@ -9,6 +9,7 @@ import mate.academy.bookstoreprod.dto.BookDto;
 import mate.academy.bookstoreprod.dto.BookSearchParametersDto;
 import mate.academy.bookstoreprod.dto.CreateBookRequestDto;
 import mate.academy.bookstoreprod.service.BookService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,9 +47,10 @@ public class BookController {
 
     @GetMapping("/search")
     @ResponseStatus(HttpStatus.OK)
-    @Operation(summary = "Search Books", description = "Search Books")
-    public List<BookDto> searchBooks(BookSearchParametersDto searchParameters) {
-        return bookService.search(searchParameters);
+    @Operation(summary = "Search Books", description = "Receives arrays of parameters."
+            + " Returns filtered, paginated and sorted data")
+    public Page<BookDto> searchBooks(BookSearchParametersDto searchParameters, Pageable pageable) {
+        return bookService.search(searchParameters, pageable);
     }
 
     @PostMapping
