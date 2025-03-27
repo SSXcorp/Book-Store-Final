@@ -1,5 +1,7 @@
 package mate.academy.bookstoreprod.exception.handler;
 
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import java.util.List;
 import java.util.stream.Collectors;
 import mate.academy.bookstoreprod.exception.EntityAlreadyExistsException;
@@ -17,6 +19,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ApiResponse(responseCode = "500", description = "Internal Server Error",
+                    content = @Content(mediaType = "application/json"))
     public ResponseEntity<String> handleAllExceptions(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR);
@@ -24,6 +28,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ApiResponse(responseCode = "404", description = "Entity Not Found",
+                    content = @Content(mediaType = "application/json"))
     public ResponseEntity<String> handleEntityNotFoundExceptions(EntityNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.NOT_FOUND);
@@ -31,6 +37,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ApiResponse(responseCode = "400", description = "Validation Failed",
+                    content = @Content(mediaType = "application/json"))
     public ResponseEntity<List<String>> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult()
@@ -46,9 +54,11 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityAlreadyExistsException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
+    @ApiResponse(responseCode = "409", description = "Entity Already Exists",
+                    content = @Content(mediaType = "application/json"))
     public ResponseEntity<String> handleEntityAlreadyExistsExceptions(
             EntityAlreadyExistsException ex) {
         return new ResponseEntity<>(ex.getMessage(),
-                HttpStatus.BAD_REQUEST);
+                HttpStatus.CONFLICT);
     }
 }
