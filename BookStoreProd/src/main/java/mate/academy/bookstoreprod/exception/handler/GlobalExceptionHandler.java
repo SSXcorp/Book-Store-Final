@@ -1,6 +1,5 @@
 package mate.academy.bookstoreprod.exception.handler;
 
-import io.swagger.v3.oas.annotations.Hidden;
 import java.util.List;
 import java.util.stream.Collectors;
 import mate.academy.bookstoreprod.exception.EntityAlreadyExistsException;
@@ -10,25 +9,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @RestControllerAdvice
-@Hidden
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public ResponseEntity<String> handleAllExceptions(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<String> handleEntityNotFoundExceptions(EntityNotFoundException ex) {
         return new ResponseEntity<>(ex.getMessage(),
                 HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<List<String>> handleValidationExceptions(
             MethodArgumentNotValidException ex) {
         List<String> errors = ex.getBindingResult()
@@ -43,6 +45,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(EntityAlreadyExistsException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
     public ResponseEntity<String> handleEntityAlreadyExistsExceptions(
             EntityAlreadyExistsException ex) {
         return new ResponseEntity<>(ex.getMessage(),
