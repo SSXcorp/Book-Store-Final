@@ -3,7 +3,6 @@ package mate.academy.bookstoreprod.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import java.util.List;
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookstoreprod.dto.BookDto;
 import mate.academy.bookstoreprod.dto.BookSearchParametersDto;
@@ -33,7 +32,7 @@ public class BookController {
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "Get all Books pageable",
             description = "Get all Books pageable")
-    public List<BookDto> getAll(Pageable pageable) {
+    public Page<BookDto> getAll(Pageable pageable) {
         return bookService.findAll(pageable);
     }
 
