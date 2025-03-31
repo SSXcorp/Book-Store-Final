@@ -32,8 +32,7 @@ public class GlobalExceptionHandler {
         List<String> errors = ex.getBindingResult()
                 .getAllErrors().stream()
                 .map(objectError -> {
-                    if (objectError instanceof FieldError) {
-                        FieldError fieldError = (FieldError) objectError;
+                    if (objectError instanceof FieldError fieldError) {
                         return "Field '" + fieldError.getField() + "' " + fieldError.getDefaultMessage();
                     } else {
                         return objectError.getDefaultMessage();
