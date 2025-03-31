@@ -1,4 +1,4 @@
-package mate.academy.bookstoreprod.dto;
+package mate.academy.bookstoreprod.dto.book;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
