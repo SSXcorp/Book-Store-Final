@@ -5,6 +5,7 @@ import mate.academy.bookstoreprod.dto.user.UserRegistrationRequestDto;
 import mate.academy.bookstoreprod.dto.user.UserResponseDto;
 import mate.academy.bookstoreprod.exception.RegistrationException;
 import mate.academy.bookstoreprod.mapper.UserMapper;
+import mate.academy.bookstoreprod.model.User;
 import mate.academy.bookstoreprod.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,10 +16,13 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public UserResponseDto register(UserRegistrationRequestDto request) {
-        if (!userRepository.existsByEmail(request.getEmail())) {
-            return userMapper.toUserResponseDto(userRepository.save(userMapper.toUser(request)));
+    public UserResponseDto register(UserRegistrationRequestDto request)
+            throws RegistrationException {
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new RegistrationException("User with same email already exists. Email: "
+                    + request.getEmail());
         }
-        throw new RegistrationException("Can't register user with email: " + request.getEmail());
+        User user = userMapper.toUser(request);
+        return userMapper.toUserResponseDto(userRepository.save(user));
     }
 }
