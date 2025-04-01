@@ -33,7 +33,8 @@ public class GlobalExceptionHandler {
                 .getAllErrors().stream()
                 .map(objectError -> {
                     if (objectError instanceof FieldError fieldError) {
-                        return "Field '" + fieldError.getField() + "' " + fieldError.getDefaultMessage();
+                        return "Field '" + fieldError.getField() + "' "
+                                + fieldError.getDefaultMessage();
                     } else {
                         return objectError.getDefaultMessage();
                     }
@@ -62,6 +63,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(RegistrationException.class)
     public ResponseEntity<String> handleRegistrationException(Exception ex) {
         return new ResponseEntity<>(ex.getMessage(),
-                HttpStatus.BAD_REQUEST);
+                HttpStatus.CONFLICT);
     }
 }
