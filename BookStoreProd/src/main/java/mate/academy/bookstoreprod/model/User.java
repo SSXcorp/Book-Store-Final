@@ -8,13 +8,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Entity
 @Table(name = "users")
 @Getter
 @Setter
-@ToString
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -22,7 +20,6 @@ public class User {
     @Column(nullable = false, unique = true)
     private String email;
     @Column(nullable = false)
-    @ToString.Exclude
     private String password;
     @Column(nullable = false)
     private String firstName;
