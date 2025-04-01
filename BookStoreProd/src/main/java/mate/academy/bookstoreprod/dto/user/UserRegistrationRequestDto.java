@@ -1,6 +1,7 @@
 package mate.academy.bookstoreprod.dto.user;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
@@ -14,8 +15,10 @@ import mate.academy.bookstoreprod.validator.ValidatePassword;
 @ValidatePassword
 public class UserRegistrationRequestDto {
     @NotBlank
+    @Size(min = 1, max = 64)
     private String email;
     @NotBlank
+    @Size(min = 8, max = 40)
     private String password;
     @NotBlank
     private String repeatPassword;
@@ -23,6 +26,5 @@ public class UserRegistrationRequestDto {
     private String firstName;
     @NotBlank
     private String lastName;
-    @NotBlank
     private String shippingAddress;
 }
