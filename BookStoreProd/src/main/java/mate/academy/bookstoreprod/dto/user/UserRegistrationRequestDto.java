@@ -15,7 +15,6 @@ import mate.academy.bookstoreprod.validator.ValidatePassword;
 @ValidatePassword
 public class UserRegistrationRequestDto {
     @NotBlank
-    @Size(min = 1, max = 64)
     private String email;
     @NotBlank
     @Size(min = 8, max = 40)
