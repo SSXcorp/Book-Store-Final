@@ -1,16 +1,15 @@
-package mate.academy.bookstoreprod.service.impl;
+package mate.academy.bookstoreprod.service.book;
 
 import lombok.RequiredArgsConstructor;
-import mate.academy.bookstoreprod.dto.BookDto;
-import mate.academy.bookstoreprod.dto.BookSearchParametersDto;
-import mate.academy.bookstoreprod.dto.CreateBookRequestDto;
+import mate.academy.bookstoreprod.dto.book.BookDto;
+import mate.academy.bookstoreprod.dto.book.BookSearchParametersDto;
+import mate.academy.bookstoreprod.dto.book.CreateBookRequestDto;
 import mate.academy.bookstoreprod.exception.EntityAlreadyExistsException;
 import mate.academy.bookstoreprod.exception.EntityNotFoundException;
 import mate.academy.bookstoreprod.mapper.BookMapper;
 import mate.academy.bookstoreprod.model.Book;
-import mate.academy.bookstoreprod.repository.BookRepository;
+import mate.academy.bookstoreprod.repository.book.BookRepository;
 import mate.academy.bookstoreprod.repository.book.BookSpecificationBuilder;
-import mate.academy.bookstoreprod.service.BookService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

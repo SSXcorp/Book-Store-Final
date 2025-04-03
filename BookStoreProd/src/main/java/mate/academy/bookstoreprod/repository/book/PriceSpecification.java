@@ -3,7 +3,6 @@ package mate.academy.bookstoreprod.repository.book;
 import jakarta.persistence.criteria.Predicate;
 import java.math.BigDecimal;
 import mate.academy.bookstoreprod.model.Book;
-import mate.academy.bookstoreprod.repository.SpecificationProvider;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 

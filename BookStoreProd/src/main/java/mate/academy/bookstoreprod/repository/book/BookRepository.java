@@ -1,4 +1,4 @@
-package mate.academy.bookstoreprod.repository;
+package mate.academy.bookstoreprod.repository.book;
 
 import mate.academy.bookstoreprod.model.Book;
 import org.springframework.data.jpa.repository.JpaRepository;
