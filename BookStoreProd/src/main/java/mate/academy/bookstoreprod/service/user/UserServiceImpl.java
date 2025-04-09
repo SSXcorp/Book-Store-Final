@@ -18,6 +18,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
+    private static final String ROLE_USER = "ROLE_USER";
 
     @Override
     public UserResponseDto register(UserRegistrationRequestDto request)
@@ -27,7 +28,7 @@ public class UserServiceImpl implements UserService {
                     + request.getEmail());
         }
         User user = userMapper.toUser(request);
-        Role defaultRole = roleRepository.findByName("ROLE_USER").orElse(null);
+        Role defaultRole = roleRepository.findByName(ROLE_USER).orElseThrow();
 
         user.setRoles(Set.of(defaultRole));
         return userMapper.toUserResponseDto(userRepository.save(user));
