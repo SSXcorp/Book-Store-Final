@@ -1,11 +1,14 @@
 package mate.academy.bookstoreprod.service.user;
 
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookstoreprod.dto.user.UserRegistrationRequestDto;
 import mate.academy.bookstoreprod.dto.user.UserResponseDto;
 import mate.academy.bookstoreprod.exception.RegistrationException;
 import mate.academy.bookstoreprod.mapper.UserMapper;
+import mate.academy.bookstoreprod.model.Role;
 import mate.academy.bookstoreprod.model.User;
+import mate.academy.bookstoreprod.repository.role.RoleRepository;
 import mate.academy.bookstoreprod.repository.user.UserRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +17,7 @@ import org.springframework.stereotype.Service;
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final RoleRepository roleRepository;
 
     @Override
     public UserResponseDto register(UserRegistrationRequestDto request)
@@ -23,6 +27,9 @@ public class UserServiceImpl implements UserService {
                     + request.getEmail());
         }
         User user = userMapper.toUser(request);
+        Role defaultRole = roleRepository.findByName("ROLE_USER").orElse(null);
+
+        user.setRoles(Set.of(defaultRole));
         return userMapper.toUserResponseDto(userRepository.save(user));
     }
 }
