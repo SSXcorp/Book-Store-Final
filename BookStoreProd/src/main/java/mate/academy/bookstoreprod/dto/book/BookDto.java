@@ -1,11 +1,11 @@
-package mate.academy.bookstoreprod.dto;
+package mate.academy.bookstoreprod.dto.book;
 
 import java.math.BigDecimal;
 import lombok.Data;
 
 @Data
 public class BookDto {
-    private int id;
+    private Long id;
     private String title;
     private String author;
     private BigDecimal price;
