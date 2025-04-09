@@ -15,10 +15,10 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+    private static final String ROLE_USER = "ROLE_USER";
     private final UserRepository userRepository;
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
-    private static final String ROLE_USER = "ROLE_USER";
 
     @Override
     public UserResponseDto register(UserRegistrationRequestDto request)
