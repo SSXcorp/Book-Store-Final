@@ -4,6 +4,7 @@ import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookstoreprod.dto.user.UserRegistrationRequestDto;
 import mate.academy.bookstoreprod.dto.user.UserResponseDto;
+import mate.academy.bookstoreprod.exception.EntityNotFoundException;
 import mate.academy.bookstoreprod.exception.RegistrationException;
 import mate.academy.bookstoreprod.mapper.UserMapper;
 import mate.academy.bookstoreprod.model.Role;
@@ -32,7 +33,7 @@ public class UserServiceImpl implements UserService {
         }
         User user = userMapper.toUser(request);
         Role defaultRole = roleRepository.findByName(RoleName.ROLE_USER)
-                .orElseThrow(() -> new RegistrationException(
+                .orElseThrow(() -> new EntityNotFoundException(
                         "Given role is not present in a database: " + RoleName.ROLE_USER.name())
                 );
 
