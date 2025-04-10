@@ -10,21 +10,22 @@ import mate.academy.bookstoreprod.exception.RegistrationException;
 import mate.academy.bookstoreprod.service.user.UserService;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
+@RequestMapping("/auth")
 @Tag(name = "Users management",
         description = "Endpoints for managing authentication and authorization")
 public class AuthenticationController {
     private final UserService userService;
 
-    @PostMapping("/register")
+    @PostMapping("/registration")
     @Operation(summary = "Register new user",
-            description = "Register new user")
+            description = "Register new user and returns it")
     public UserResponseDto register(@Valid @RequestBody UserRegistrationRequestDto request)
             throws RegistrationException {
         return userService.register(request);
     }
-
 }

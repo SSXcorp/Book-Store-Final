@@ -1,19 +1,27 @@
 package mate.academy.bookstoreprod.service.user;
 
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookstoreprod.dto.user.UserRegistrationRequestDto;
 import mate.academy.bookstoreprod.dto.user.UserResponseDto;
 import mate.academy.bookstoreprod.exception.RegistrationException;
 import mate.academy.bookstoreprod.mapper.UserMapper;
+import mate.academy.bookstoreprod.model.Role;
+import mate.academy.bookstoreprod.model.RoleName;
 import mate.academy.bookstoreprod.model.User;
+import mate.academy.bookstoreprod.repository.role.RoleRepository;
 import mate.academy.bookstoreprod.repository.user.UserRepository;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
+
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final RoleRepository roleRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     public UserResponseDto register(UserRegistrationRequestDto request)
@@ -23,6 +31,13 @@ public class UserServiceImpl implements UserService {
                     + request.getEmail());
         }
         User user = userMapper.toUser(request);
+        Role defaultRole = roleRepository.findByName(RoleName.ROLE_USER)
+                .orElseThrow(() -> new RegistrationException(
+                        "Given role is not present in a database: " + RoleName.ROLE_USER.name())
+                );
+
+        user.setRoles(Set.of(defaultRole));
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         return userMapper.toUserResponseDto(userRepository.save(user));
     }
 }
