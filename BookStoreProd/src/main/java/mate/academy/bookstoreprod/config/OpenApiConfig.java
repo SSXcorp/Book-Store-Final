@@ -12,6 +12,7 @@ public class OpenApiConfig {
     private static final String BEARER_AUTH = "BearerAuth";
     private static final String JWT = "JWT";
     private static final String BEARER = "bearer";
+
     @Bean
     public OpenAPI customOpenApi() {
         return new OpenAPI()
