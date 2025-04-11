@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="9.3">
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\BookStoreProdApplication.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\config\MapperConfig.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\config\OpenApiConfig.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\config\SecurityConfig.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\controller\AuthenticationController.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\controller\BookController.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\dto\book\BookDto.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\dto\book\BookSearchParametersDto.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\dto\book\CreateBookRequestDto.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\dto\user\UserLoginRequestDto.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\dto\user\UserLoginResponseDto.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\dto\user\UserRegistrationRequestDto.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\dto\user\UserResponseDto.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\exception\EntityAlreadyExistsException.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\exception\EntityNotFoundException.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\exception\handler\GlobalExceptionHandler.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\exception\RegistrationException.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\mapper\BookMapper.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\mapper\UserMapper.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\model\Book.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\model\Role.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\model\RoleName.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\model\User.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\repository\book\AuthorSpecification.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\repository\book\BookRepository.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\repository\book\BookSpecificationBuilder.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\repository\book\BookSpecificationProviderManager.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\repository\book\PriceSpecification.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\repository\book\SpecificationBuilder.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\repository\book\SpecificationProvider.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\repository\book\SpecificationProviderManager.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\repository\book\TitleSpecification.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\repository\role\RoleRepository.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\repository\user\UserRepository.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\security\AuthenticationService.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\security\CustomUserDetailsService.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\security\JwtAuthenticationFilter.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\security\JwtUtil.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\service\book\BookService.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\service\book\BookServiceImpl.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\service\user\UserService.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\service\user\UserServiceImpl.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\validator\PasswordValidator.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\java\mate\academy\bookstoreprod\validator\ValidatePassword.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\test\java\mate\academy\bookstoreprod\BookStoreProdApplicationTests.java">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\resources\application.properties">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\main\resources\liquibase.properties">
+</file>
+<file name="C:\MateProjects\Book-Store-Project\BookStoreProd\src\test\resources\application.properties">
+</file>
+</checkstyle>

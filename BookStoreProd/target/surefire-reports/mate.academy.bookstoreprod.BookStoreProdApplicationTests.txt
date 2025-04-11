@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: mate.academy.bookstoreprod.BookStoreProdApplicationTests
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.482 s -- in mate.academy.bookstoreprod.BookStoreProdApplicationTests
