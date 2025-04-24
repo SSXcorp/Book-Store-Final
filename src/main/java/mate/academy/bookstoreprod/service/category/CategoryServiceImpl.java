@@ -1,6 +1,5 @@
 package mate.academy.bookstoreprod.service.category;
 
-
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookstoreprod.dto.category.CategoryDto;
 import mate.academy.bookstoreprod.dto.category.CreateCategoryDto;
@@ -9,7 +8,6 @@ import mate.academy.bookstoreprod.exception.EntityNotFoundException;
 import mate.academy.bookstoreprod.mapper.CategoryMapper;
 import mate.academy.bookstoreprod.model.Category;
 import mate.academy.bookstoreprod.repository.category.CategoryRepository;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;

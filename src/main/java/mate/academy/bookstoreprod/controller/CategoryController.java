@@ -45,7 +45,7 @@ public class CategoryController {
     @Operation(summary = "Get Category by id",
             description = "Get Category by id")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-    public CategoryDto getCategoryById(@PathVariable Long id){
+    public CategoryDto getCategoryById(@PathVariable Long id) {
         return categoryService.getById(id);
     }
 
@@ -54,7 +54,8 @@ public class CategoryController {
     @Operation(summary = "Get all Books by Category id",
             description = "Get all Books with given Category id")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-    public Page<BookDtoWithoutCategoryIds> getBooksByCategoryId(@PathVariable Long id, Pageable pageable) {
+    public Page<BookDtoWithoutCategoryIds> getBooksByCategoryId(@PathVariable Long id,
+                                                                Pageable pageable) {
         return bookService.findAllByCategoryId(id, pageable);
     }
 
@@ -72,7 +73,8 @@ public class CategoryController {
     @Operation(summary = "Update Category",
             description = "Update existing Category")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public CategoryDto updateCategory(@PathVariable Long id, @RequestBody CreateCategoryDto categoryDto) {
+    public CategoryDto updateCategory(@PathVariable Long id,
+                                      @RequestBody CreateCategoryDto categoryDto) {
         return categoryService.update(id, categoryDto);
     }
 

@@ -35,7 +35,9 @@ public class BookServiceImpl implements BookService {
             throw new EntityAlreadyExistsException("Book with isbn " + dto.getIsbn()
                     + " already exists");
         }
-        Set<Category> categories = new HashSet<>(categoryRepository.findAllById(dto.getCategories()));
+        Set<Category> categories = new HashSet<>(
+                categoryRepository.findAllById(dto.getCategories())
+        );
         book.setCategories(categories);
         return bookMapper.toBookDto(bookRepository.save(book));
     }
@@ -58,7 +60,9 @@ public class BookServiceImpl implements BookService {
         }
         Book book = bookMapper.toBook(dto);
         book.setId(id);
-        Set<Category> categories = new HashSet<>(categoryRepository.findAllById(dto.getCategories()));
+        Set<Category> categories = new HashSet<>(
+                categoryRepository.findAllById(dto.getCategories())
+        );
         book.setCategories(categories);
         bookRepository.save(book);
         return bookMapper.toBookDto(book);

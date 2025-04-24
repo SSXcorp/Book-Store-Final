@@ -11,7 +11,6 @@ import org.springframework.stereotype.Component;
 public class CategorySpecification implements SpecificationProvider<Book> {
     private static final String CATEGORY = "categories";
 
-
     @Override
     public String getKey() {
         return CATEGORY;

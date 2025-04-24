@@ -11,7 +11,6 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import mate.academy.bookstoreprod.dto.category.CategoryDto;
 
 @Getter
 @Setter

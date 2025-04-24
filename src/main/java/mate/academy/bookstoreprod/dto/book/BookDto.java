@@ -3,7 +3,6 @@ package mate.academy.bookstoreprod.dto.book;
 import java.math.BigDecimal;
 import java.util.Set;
 import lombok.Data;
-import mate.academy.bookstoreprod.dto.category.CategoryDto;
 
 @Data
 public class BookDto {
