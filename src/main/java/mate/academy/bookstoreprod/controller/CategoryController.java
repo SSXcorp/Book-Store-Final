@@ -2,6 +2,7 @@ package mate.academy.bookstoreprod.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookstoreprod.dto.book.BookDtoWithoutCategoryIds;
 import mate.academy.bookstoreprod.dto.category.CategoryDto;
@@ -63,7 +64,7 @@ public class CategoryController {
     @Operation(summary = "Create Category",
             description = "Create a new Category")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public CategoryDto createCategory(@RequestBody CreateCategoryDto categoryDto) {
+    public CategoryDto createCategory(@RequestBody @Valid CreateCategoryDto categoryDto) {
         return categoryService.save(categoryDto);
     }
 
@@ -73,7 +74,7 @@ public class CategoryController {
             description = "Update existing Category")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public CategoryDto updateCategory(@PathVariable Long id,
-                                      @RequestBody CreateCategoryDto categoryDto) {
+                                      @RequestBody @Valid CreateCategoryDto categoryDto) {
         return categoryService.update(id, categoryDto);
     }
 
