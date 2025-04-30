@@ -1,5 +1,6 @@
 package mate.academy.bookstoreprod.repository.book;
 
+import java.util.Optional;
 import mate.academy.bookstoreprod.model.Book;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -13,4 +14,6 @@ public interface BookRepository extends JpaRepository<Book, Long>, JpaSpecificat
     boolean existsByIsbn(String isbn);
 
     Page<Book> findAllByCategories_id(Long categoryId, Pageable pageable);
+
+    Optional<Book> findByIsbn(String isbn);
 }

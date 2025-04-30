@@ -1,7 +1,5 @@
 package mate.academy.bookstoreprod.service.book;
 
-import java.util.HashSet;
-import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookstoreprod.dto.book.BookDto;
 import mate.academy.bookstoreprod.dto.book.BookDtoWithoutCategoryIds;
@@ -11,7 +9,6 @@ import mate.academy.bookstoreprod.exception.EntityAlreadyExistsException;
 import mate.academy.bookstoreprod.exception.EntityNotFoundException;
 import mate.academy.bookstoreprod.mapper.BookMapper;
 import mate.academy.bookstoreprod.model.Book;
-import mate.academy.bookstoreprod.model.Category;
 import mate.academy.bookstoreprod.repository.book.BookRepository;
 import mate.academy.bookstoreprod.repository.book.BookSpecificationBuilder;
 import mate.academy.bookstoreprod.repository.category.CategoryRepository;
@@ -30,15 +27,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto save(CreateBookRequestDto dto) {
-        Book book = bookMapper.toBook(dto);
         if (bookRepository.existsByIsbn(dto.getIsbn())) {
             throw new EntityAlreadyExistsException("Book with isbn " + dto.getIsbn()
                     + " already exists");
         }
-        Set<Category> categories = new HashSet<>(
-                categoryRepository.findAllById(dto.getCategories())
-        );
-        book.setCategories(categories);
+        Book book = new Book();
+        bookMapper.toBookWithCategories(book, dto, categoryRepository);
         return bookMapper.toBookDto(bookRepository.save(book));
     }
 
@@ -55,17 +49,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public BookDto updateById(Long id, CreateBookRequestDto dto) {
-        if (!bookRepository.existsById(id)) {
-            throw new EntityNotFoundException("Book not found with id: " + id);
-        }
-        Book book = bookMapper.toBook(dto);
-        book.setId(id);
-        Set<Category> categories = new HashSet<>(
-                categoryRepository.findAllById(dto.getCategories())
-        );
-        book.setCategories(categories);
-        bookRepository.save(book);
-        return bookMapper.toBookDto(book);
+        Book book = bookRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("Book not found with id: " + id));
+        bookMapper.toBookWithCategories(book, dto, categoryRepository);
+        return bookMapper.toBookDto(bookRepository.save(book));
     }
 
     @Override
