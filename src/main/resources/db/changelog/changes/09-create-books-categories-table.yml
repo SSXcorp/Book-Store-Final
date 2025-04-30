@@ -1,10 +1,10 @@
 databaseChangeLog:
   - changeSet:
-      id: 08-create-book-categories-table
+      id: 08-create-books-categories-table
       author: bohdan
       changes:
         - createTable:
-            tableName: book_categories
+            tableName: books_categories
             columns:
               - column:
                   name: book_id
@@ -17,20 +17,20 @@ databaseChangeLog:
                   constraints:
                     nullable: false
         - addPrimaryKey:
-            tableName: book_categories
+            tableName: books_categories
             columnNames: book_id, category_id
-            constraintName: pk_book_categories
+            constraintName: pk_books_categories
         - addForeignKeyConstraint:
-            baseTableName: book_categories
+            baseTableName: books_categories
             baseColumnNames: book_id
-            constraintName: fk_book_categories_book
+            constraintName: fk_book_categories_books
             referencedTableName: books
             referencedColumnNames: id
             onDelete: CASCADE
         - addForeignKeyConstraint:
-            baseTableName: book_categories
+            baseTableName: books_categories
             baseColumnNames: category_id
-            constraintName: fk_book_categories_category
+            constraintName: fk_books_categories_category
             referencedTableName: categories
             referencedColumnNames: id
             onDelete: CASCADE
