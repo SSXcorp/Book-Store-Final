@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: 10-insert-categories
+      author: bohdan
+      changes:
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 1
+              - column:
+                  name: name
+                  value: Science
+              - column:
+                  name: description
+                  value: Books about science and all around.
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 2
+              - column:
+                  name: name
+                  value: Fantasy
+              - column:
+                  name: description
+                  value: Books with magical worlds and mythical creatures.
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
+
+        - insert:
+            tableName: categories
+            columns:
+              - column:
+                  name: id
+                  valueNumeric: 3
+              - column:
+                  name: name
+                  value: Mystery
+              - column:
+                  name: description
+                  value: Books where you can receive a wisdom.
+              - column:
+                  name: is_deleted
+                  valueBoolean: false
