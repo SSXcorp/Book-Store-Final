@@ -2,6 +2,8 @@ package mate.academy.bookstoreprod.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookstoreprod.dto.shoppingcart.ShoppingCartResponseDto;
 import mate.academy.bookstoreprod.service.shoppingcart.ShoppingCartService;
@@ -40,7 +42,7 @@ public class ShoppingCartController {
             description = "Add item to ShoppingCart")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public ShoppingCartResponseDto addItemToShoppingCart(@RequestParam Long bookId,
-                                                         @RequestParam int quantity) {
+                                                         @RequestParam @Positive int quantity) {
         return cartService.addItemToCart(bookId, quantity);
     }
 
@@ -50,7 +52,7 @@ public class ShoppingCartController {
             description = "Update item quantity in ShoppingCart")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public ShoppingCartResponseDto updateCartItemQuantity(@PathVariable Long cartItemId,
-                                                          @RequestParam int quantity) {
+                                                          @RequestParam @Positive int quantity) {
         return cartService.updateCartItemQuantity(cartItemId, quantity);
     }
 
