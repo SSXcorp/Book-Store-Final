@@ -51,7 +51,7 @@ public class User implements UserDetails {
     private boolean isDeleted;
 
     @JsonBackReference
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private ShoppingCart shoppingCart;
 
     @Override

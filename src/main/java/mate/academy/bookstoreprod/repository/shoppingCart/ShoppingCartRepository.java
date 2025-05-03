@@ -2,7 +2,6 @@ package mate.academy.bookstoreprod.repository.shoppingCart;
 
 import java.util.Optional;
 import mate.academy.bookstoreprod.model.ShoppingCart;
-import mate.academy.bookstoreprod.model.User;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
