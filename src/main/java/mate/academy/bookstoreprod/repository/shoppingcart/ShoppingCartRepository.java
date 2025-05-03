@@ -1,4 +1,4 @@
-package mate.academy.bookstoreprod.repository.shoppingCart;
+package mate.academy.bookstoreprod.repository.shoppingcart;
 
 import java.util.Optional;
 import mate.academy.bookstoreprod.model.ShoppingCart;

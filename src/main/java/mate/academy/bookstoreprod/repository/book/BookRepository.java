@@ -1,6 +1,5 @@
 package mate.academy.bookstoreprod.repository.book;
 
-import jakarta.persistence.Entity;
 import java.util.Optional;
 import mate.academy.bookstoreprod.model.Book;
 import org.springframework.data.domain.Page;

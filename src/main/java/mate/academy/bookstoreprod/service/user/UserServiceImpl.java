@@ -56,6 +56,7 @@ public class UserServiceImpl implements UserService {
         String email = authentication.getName();
 
         return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + email));
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: "
+                        + email));
     }
 }

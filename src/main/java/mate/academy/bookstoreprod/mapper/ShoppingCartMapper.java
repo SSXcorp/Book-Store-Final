@@ -1,8 +1,8 @@
 package mate.academy.bookstoreprod.mapper;
 
 import mate.academy.bookstoreprod.config.MapperConfig;
-import mate.academy.bookstoreprod.dto.shoppingCart.CartItemResponseDto;
-import mate.academy.bookstoreprod.dto.shoppingCart.ShoppingCartResponseDto;
+import mate.academy.bookstoreprod.dto.shoppingcart.CartItemResponseDto;
+import mate.academy.bookstoreprod.dto.shoppingcart.ShoppingCartResponseDto;
 import mate.academy.bookstoreprod.model.CartItem;
 import mate.academy.bookstoreprod.model.ShoppingCart;
 import org.mapstruct.Mapper;

@@ -3,9 +3,8 @@ package mate.academy.bookstoreprod.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
-import mate.academy.bookstoreprod.dto.shoppingCart.ShoppingCartResponseDto;
-import mate.academy.bookstoreprod.model.ShoppingCart;
-import mate.academy.bookstoreprod.service.shoppingCart.ShoppingCartService;
+import mate.academy.bookstoreprod.dto.shoppingcart.ShoppingCartResponseDto;
+import mate.academy.bookstoreprod.service.shoppingcart.ShoppingCartService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +18,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Tag(name = "ShoppingCart management", description = "Endpoints for managing User's ShoppingCart entity")
+@Tag(name = "ShoppingCart management",
+        description = "Endpoints for managing User's ShoppingCart entity")
 @RequiredArgsConstructor
 @RequestMapping("/cart")
 public class ShoppingCartController {
@@ -39,7 +39,8 @@ public class ShoppingCartController {
     @Operation(summary = "Add to ShoppingCart",
             description = "Add item to ShoppingCart")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-    public ShoppingCartResponseDto addItemToShoppingCart(@RequestParam Long bookId, @RequestParam int quantity) {
+    public ShoppingCartResponseDto addItemToShoppingCart(@RequestParam Long bookId,
+                                                         @RequestParam int quantity) {
         return cartService.addItemToCart(bookId, quantity);
     }
 
@@ -48,7 +49,8 @@ public class ShoppingCartController {
     @Operation(summary = "Update item quantity",
             description = "Update item quantity in ShoppingCart")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-    public ShoppingCartResponseDto updateCartItemQuantity(@PathVariable Long cartItemId, @RequestParam int quantity) {
+    public ShoppingCartResponseDto updateCartItemQuantity(@PathVariable Long cartItemId,
+                                                          @RequestParam int quantity) {
         return cartService.updateCartItemQuantity(cartItemId, quantity);
     }
 
