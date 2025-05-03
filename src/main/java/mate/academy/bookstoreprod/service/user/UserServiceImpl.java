@@ -12,9 +12,7 @@ import mate.academy.bookstoreprod.model.RoleName;
 import mate.academy.bookstoreprod.model.User;
 import mate.academy.bookstoreprod.repository.role.RoleRepository;
 import mate.academy.bookstoreprod.repository.user.UserRepository;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import mate.academy.bookstoreprod.service.shoppingcart.ShoppingCartService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
+    private final ShoppingCartService shoppingCartService;
 
     @Override
     public UserResponseDto register(UserRegistrationRequestDto request)
@@ -34,29 +33,16 @@ public class UserServiceImpl implements UserService {
             throw new RegistrationException("User with same email already exists. Email: "
                     + request.getEmail());
         }
+
         User user = userMapper.toUser(request);
         Role defaultRole = roleRepository.findByName(RoleName.ROLE_USER)
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Given role is not present in a database: " + RoleName.ROLE_USER.name())
                 );
-
         user.setRoles(Set.of(defaultRole));
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        return userMapper.toUserResponseDto(userRepository.save(user));
-    }
-
-    @Override
-    public User getCurrentUser() {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-
-        if (authentication == null || !authentication.isAuthenticated()
-                || authentication.getPrincipal().equals("anonymousUser")) {
-            throw new RuntimeException("No authenticated user found");
-        }
-        String email = authentication.getName();
-
-        return userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("User not found with email: "
-                        + email));
+        user = userRepository.save(user);
+        shoppingCartService.createShoppingCart(user);
+        return userMapper.toUserResponseDto(user);
     }
 }
