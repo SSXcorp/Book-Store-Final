@@ -3,7 +3,6 @@ package mate.academy.bookstoreprod.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookstoreprod.dto.shoppingcart.ShoppingCartResponseDto;
 import mate.academy.bookstoreprod.service.shoppingcart.ShoppingCartService;
