@@ -15,7 +15,6 @@ import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
-import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -26,7 +25,6 @@ import org.hibernate.annotations.SQLRestriction;
 @ToString
 @SQLDelete(sql = "UPDATE books SET is_deleted = TRUE WHERE id = ?")
 @SQLRestriction("is_deleted = FALSE")
-@BatchSize(size = 10)
 public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
