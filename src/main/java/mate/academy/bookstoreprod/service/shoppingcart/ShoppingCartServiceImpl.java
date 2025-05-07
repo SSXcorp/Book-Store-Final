@@ -40,22 +40,24 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .orElseThrow(() -> new EntityNotFoundException("Book not found with id: "
                         + bookId));
 
-        CartItem givenBook = cart.getCartItems().stream()
-                .filter(item -> item.getBook().getId().equals(bookId))
-                .findFirst()
+        CartItem givenBook = cartItemRepository.findByIdAndShoppingCartId(userId, bookId)
                 .orElse(null);
 
         if (givenBook != null) {
             givenBook.setQuantity(givenBook.getQuantity() + quantity);
             cartItemRepository.save(givenBook);
         } else {
-            CartItem newItem = new CartItem();
-            newItem.setBook(book);
-            newItem.setQuantity(quantity);
-            newItem.setShoppingCart(cart);
-            cart.getCartItems().add(newItem);
+            addCartItem(book, quantity, cart);
         }
         return mapper.toDto(shoppingCartRepository.save(cart));
+    }
+
+    private void addCartItem(Book book, int quantity, ShoppingCart cart) {
+        CartItem newItem = new CartItem();
+        newItem.setBook(book);
+        newItem.setQuantity(quantity);
+        newItem.setShoppingCart(cart);
+        cart.getCartItems().add(newItem);
     }
 
     @Override
@@ -70,7 +72,11 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             item.setQuantity(quantity);
             cartItemRepository.save(item);
         }
-        return mapper.toDto(item.getShoppingCart());
+        ShoppingCart fullCart = shoppingCartRepository.findShoppingCartById(shoppingCartId)
+                .orElseThrow(() -> new EntityNotFoundException("Shopping cart not found with id: "
+                        + shoppingCartId));
+
+        return mapper.toDto(fullCart);
     }
 
     @Override
