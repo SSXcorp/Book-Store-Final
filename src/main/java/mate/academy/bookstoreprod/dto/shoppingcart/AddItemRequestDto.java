@@ -10,6 +10,5 @@ public class AddItemRequestDto {
     @NotNull
     private Long bookId;
     @Positive
-    @NotNull
     private int quantity;
 }

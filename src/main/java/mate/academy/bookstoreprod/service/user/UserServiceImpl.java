@@ -15,8 +15,10 @@ import mate.academy.bookstoreprod.repository.user.UserRepository;
 import mate.academy.bookstoreprod.service.shoppingcart.ShoppingCartService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
@@ -41,7 +43,7 @@ public class UserServiceImpl implements UserService {
                 );
         user.setRoles(Set.of(defaultRole));
         user.setPassword(passwordEncoder.encode(request.getPassword()));
-        user = userRepository.save(user);
+        userRepository.save(user);
         shoppingCartService.createShoppingCart(user);
         return userMapper.toUserResponseDto(user);
     }
