@@ -43,7 +43,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .orElseThrow(() -> new EntityNotFoundException("Book not found with id: "
                         + bookId));
 
-        CartItem givenBookItem = cartItemRepository.findByIdAndShoppingCartId(userId, bookId)
+        CartItem givenBookItem = cartItemRepository.findByBookIdAndShoppingCartId(bookId, userId)
                 .orElse(null);
 
         if (givenBookItem != null) {
@@ -92,5 +92,4 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         newItem.setShoppingCart(cart);
         cart.getCartItems().add(newItem);
     }
-
 }
