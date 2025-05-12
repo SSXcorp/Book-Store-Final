@@ -1,6 +1,5 @@
 package mate.academy.bookstoreprod.repository.order;
 
-import java.util.Optional;
 import mate.academy.bookstoreprod.model.Order;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

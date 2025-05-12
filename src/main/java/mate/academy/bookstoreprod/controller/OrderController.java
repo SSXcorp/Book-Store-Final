@@ -66,10 +66,10 @@ public class OrderController {
             description = "Get specific OrderItem by id")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
     public OrderItemResponseDto getSpecificOrderItem(@PathVariable Long orderId,
-                                     @PathVariable Long id,
+                                     @PathVariable Long itemId,
                                      Authentication authentication) {
         Long userId = getCurrentUserId(authentication);
-        return orderService.getSpecificOrderItem(orderId, id, userId);
+        return orderService.getSpecificOrderItem(orderId, itemId, userId);
     }
 
     @PatchMapping("/{id}")
