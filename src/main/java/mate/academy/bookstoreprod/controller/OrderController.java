@@ -2,6 +2,7 @@ package mate.academy.bookstoreprod.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import mate.academy.bookstoreprod.dto.order.AddOrderRequestDto;
 import mate.academy.bookstoreprod.dto.order.OrderResponseDto;
@@ -33,7 +34,7 @@ public class OrderController {
     @Operation(summary = "Add Order",
             description = "Add a new Order")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-    public OrderResponseDto addOrder(@RequestBody AddOrderRequestDto order,
+    public OrderResponseDto addOrder(@RequestBody @Valid AddOrderRequestDto order,
                                      Authentication authentication) {
         Long id = getCurrentUserId(authentication);
         return orderService.createOrder(id, order);
@@ -60,7 +61,7 @@ public class OrderController {
         return orderService.getOrderItems(id, orderId, pageable);
     }
 
-    @GetMapping("/{orderId}/items/{id}")
+    @GetMapping("/{orderId}/items/{itemId}")
     @Operation(summary = "Get OrderItem by id",
             description = "Get specific OrderItem by id")
     @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")

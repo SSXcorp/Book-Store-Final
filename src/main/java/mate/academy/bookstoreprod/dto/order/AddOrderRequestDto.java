@@ -1,10 +1,10 @@
 package mate.academy.bookstoreprod.dto.order;
 
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
 public class AddOrderRequestDto {
-    @NotEmpty
+    @NotBlank
     private String shippingAddress;
 }
