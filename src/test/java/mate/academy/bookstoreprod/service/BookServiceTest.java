@@ -1,5 +1,14 @@
 package mate.academy.bookstoreprod.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
@@ -16,19 +25,11 @@ import mate.academy.bookstoreprod.model.Category;
 import mate.academy.bookstoreprod.repository.book.BookRepository;
 import mate.academy.bookstoreprod.repository.book.BookSpecificationBuilder;
 import mate.academy.bookstoreprod.service.book.BookServiceImpl;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -61,7 +62,7 @@ public class BookServiceTest {
     private BookMapper bookMapper;
 
     @Mock
-    BookSpecificationBuilder bookSpecificationBuilder;
+    private BookSpecificationBuilder bookSpecificationBuilder;
 
     @InjectMocks
     private BookServiceImpl bookServiceImpl;
@@ -164,8 +165,6 @@ public class BookServiceTest {
         toUpdateDto.setPrice(BigDecimal.valueOf(TWO_HUNDRED));
         toUpdateDto.setCategories(Set.of(ONE));
 
-        Book existing = getBook();
-
         Book updated = new Book();
         updated.setId(ONE);
         updated.setTitle(UPDATE_TITLE);
@@ -179,6 +178,8 @@ public class BookServiceTest {
         updatedDto.setAuthor(UPDATE_AUTHOR);
         updatedDto.setPrice(BigDecimal.valueOf(TWO_HUNDRED));
         updatedDto.setCategories(Set.of(ONE));
+
+        Book existing = getBook();
 
         when(bookRepository.findById(ONE)).thenReturn(Optional.of(existing));
         when(bookRepository.save(any(Book.class))).thenReturn(updated);
@@ -203,7 +204,8 @@ public class BookServiceTest {
 
         when(bookRepository.findById(invalidId)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> bookServiceImpl.updateById(invalidId, dto));
+        assertThrows(EntityNotFoundException.class,
+                () -> bookServiceImpl.updateById(invalidId, dto));
     }
 
     @Test
@@ -213,9 +215,6 @@ public class BookServiceTest {
     public void search_WithValidTitlesArray_ReturnsAllBookDtoPageableWithGivenTitles() {
         BookSearchParametersDto searchParams = new BookSearchParametersDto();
         searchParams.setTitle(new String[]{JAVA, SPRING});
-
-        Specification<Book> titleSpecification = Specification.where((root, query, criteriaBuilder) -> root.get(TITLE)
-                .in((Object) searchParams.getTitle()));
 
         Book book1 = new Book();
         book1.setTitle(JAVA);
@@ -231,6 +230,12 @@ public class BookServiceTest {
 
         Pageable pageable = PageRequest.of(ZERO, TEN);
         Page<Book> books = new PageImpl<>(List.of(book1, book2));
+
+        Specification<Book> titleSpecification =
+                Specification.where((root,
+                                     query,
+                                     criteriaBuilder) -> root.get(TITLE)
+                        .in((Object) searchParams.getTitle()));
 
         when(bookRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(books);
         when(bookSpecificationBuilder.build(any())).thenReturn(titleSpecification);

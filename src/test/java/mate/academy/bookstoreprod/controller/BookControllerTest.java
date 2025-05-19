@@ -1,6 +1,14 @@
 package mate.academy.bookstoreprod.controller;
 
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.math.BigDecimal;
@@ -17,39 +25,29 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BookControllerTest {
+    protected static MockMvc mockMvc;
 
-    private static final String URI = "/books";
-    private static final String URI_WITH_ID = "/books/{id}";
-    private static final String BOOK_TITLE = "Book Title";
+    private static final Long BOOK_ID = 1L;
     private static final String BOOK_AUTHOR = "John Doe";
     private static final String BOOK_DESCRIPTION = "Book Description";
     private static final String BOOK_ISBN = "1234567890";
     private static final BigDecimal BOOK_PRICE = BigDecimal.valueOf(200);
+    private static final String BOOK_TITLE = "Book Title";
     private static final Long CATEGORY_ID = 1L;
-    private static final Long BOOK_ID = 1L;
-
-    private static final String UPDATED_TITLE = "Updated Title";
+    private static final String SEARCH_AUTHOR = "John";
+    private static final String SEARCH_TITLE = "Book";
     private static final String UPDATED_AUTHOR = "Updated Author";
     private static final String UPDATED_DESCRIPTION = "Updated Description";
     private static final String UPDATED_ISBN = "9876543210";
     private static final BigDecimal UPDATED_PRICE = BigDecimal.valueOf(300);
-
-    private static final String SEARCH_TITLE = "Book";
-    private static final String SEARCH_AUTHOR = "John";
-
-    protected static MockMvc mockMvc;
+    private static final String UPDATED_TITLE = "Updated Title";
+    private static final String URI = "/books";
+    private static final String URI_WITH_ID = "/books/{id}";
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -125,7 +123,8 @@ public class BookControllerTest {
                 .andExpect(jsonPath("$.id").value(BOOK_ID))
                 .andReturn();
 
-        BookDto savedBookDto = objectMapper.readValue(result.getResponse().getContentAsString(), BookDto.class);
+        BookDto savedBookDto = objectMapper.readValue(result.getResponse().getContentAsString(),
+                BookDto.class);
 
         Assertions.assertNotNull(savedBookDto);
         Assertions.assertNotNull(savedBookDto.getId());

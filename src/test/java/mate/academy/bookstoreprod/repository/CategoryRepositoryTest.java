@@ -1,8 +1,9 @@
 package mate.academy.bookstoreprod.repository;
 
-import mate.academy.bookstoreprod.repository.category.CategoryRepository;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import mate.academy.bookstoreprod.repository.category.CategoryRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

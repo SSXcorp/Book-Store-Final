@@ -1,5 +1,13 @@
 package mate.academy.bookstoreprod.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+
 import java.util.List;
 import java.util.Optional;
 import mate.academy.bookstoreprod.dto.category.CategoryDto;
@@ -10,18 +18,11 @@ import mate.academy.bookstoreprod.mapper.CategoryMapper;
 import mate.academy.bookstoreprod.model.Category;
 import mate.academy.bookstoreprod.repository.category.CategoryRepository;
 import mate.academy.bookstoreprod.service.category.CategoryServiceImpl;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.mockito.ArgumentMatchers.any;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -128,7 +129,6 @@ public class CategoryServiceTest {
         CreateCategoryDto updateDto = new CreateCategoryDto();
         updateDto.setName(UPDATED_CATEGORY_NAME);
 
-        Category existing = getCategory();
         Category updated = new Category();
         updated.setId(ONE);
         updated.setName(UPDATED_CATEGORY_NAME);
@@ -136,6 +136,8 @@ public class CategoryServiceTest {
         CategoryDto updatedDto = new CategoryDto();
         updatedDto.setId(ONE);
         updatedDto.setName(UPDATED_CATEGORY_NAME);
+
+        Category existing = getCategory();
 
         when(categoryRepository.findById(ONE)).thenReturn(Optional.of(existing));
         when(categoryRepository.save(existing)).thenReturn(updated);
@@ -157,7 +159,8 @@ public class CategoryServiceTest {
 
         when(categoryRepository.findById(NONEXISTING_ID)).thenReturn(Optional.empty());
 
-        assertThrows(EntityNotFoundException.class, () -> categoryService.update(NONEXISTING_ID, updateDto));
+        assertThrows(EntityNotFoundException.class,
+                () -> categoryService.update(NONEXISTING_ID, updateDto));
         verify(categoryRepository).findById(NONEXISTING_ID);
     }
 

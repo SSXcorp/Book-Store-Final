@@ -1,11 +1,12 @@
 package mate.academy.bookstoreprod.repository;
 
-import java.util.Optional;
-import mate.academy.bookstoreprod.model.Book;
-import mate.academy.bookstoreprod.repository.book.BookRepository;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+
+import java.util.Optional;
+import mate.academy.bookstoreprod.model.Book;
+import mate.academy.bookstoreprod.repository.book.BookRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,8 +38,10 @@ public class BookRepositoryTest {
         Optional<Book> actualBook = bookRepository.findByIsbn(expectedIsbn);
 
         assertTrue(actualBook.isPresent(), "Book should be present");
-        assertEquals(expectedId, actualBook.get().getId(), "The ids of books should be the same");
-        assertEquals(expectedIsbn, actualBook.get().getIsbn(), "The isbn of books should be the same");
+        assertEquals(expectedId, actualBook.get().getId(),
+                "The ids of books should be the same");
+        assertEquals(expectedIsbn, actualBook.get().getIsbn(),
+                "The isbn of books should be the same");
     }
 
     @Test
@@ -101,7 +104,8 @@ public class BookRepositoryTest {
         Long id = 1L;
         bookRepository.deleteById(id);
 
-        assertFalse(bookRepository.existsById(id), "Expected book with id: " + id + " to be deleted");
+        assertFalse(bookRepository.existsById(id),
+                "Expected book with id: " + id + " to be deleted");
     }
 
     @Test
@@ -115,7 +119,9 @@ public class BookRepositoryTest {
     public void findAll_WithThreeBooksInDatabase_ReturnsThreeBooks() {
         Page<Book> actual = bookRepository.findAll(PageRequest.of(0, 10));
 
-        assertEquals(3, actual.getTotalElements(), "Expected elements with category id 2: 3, but actual: " + actual.getTotalElements());
+        assertEquals(3, actual.getTotalElements(),
+                "Expected elements with category id 2: 3, but actual: "
+                        + actual.getTotalElements());
     }
 
     @Test
@@ -130,6 +136,8 @@ public class BookRepositoryTest {
     public void findAllByCategories_id_WithValidCategoryId_ReturnsThreeMatchingBooks() {
         Page<Book> actual = bookRepository.findAllByCategories_id(2L, PageRequest.of(0, 10));
 
-        assertEquals(3, actual.getTotalElements(), "Expected elements with category id 2: 3, but actual: " + actual.getTotalElements());
+        assertEquals(3, actual.getTotalElements(),
+                "Expected elements with category id 2: 3, but actual: "
+                        + actual.getTotalElements());
     }
 }
