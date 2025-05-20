@@ -62,6 +62,8 @@ public class BookControllerTest {
 
     @Test
     @WithMockUser(username = "admin@admin.com", roles = {"ADMIN"})
+    @Sql(scripts = "classpath:database/category/add-one-category.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/book/delete-all-from-books.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void save_ValidData_ShouldReturnBookDtoOfSavedBook() throws Exception {
@@ -88,7 +90,8 @@ public class BookControllerTest {
 
     @Test
     @WithMockUser(username = "user@user.com", roles = {"USER"})
-    @Sql(scripts = "classpath:database/book/add-three-books.sql",
+    @Sql(scripts = {"classpath:database/category/delete-all-from-categories.sql",
+            "classpath:database/book/add-three-books.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     @Sql(scripts = "classpath:database/book/delete-all-from-books.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
@@ -148,9 +151,12 @@ public class BookControllerTest {
 
     @Test
     @WithMockUser(username = "admin@admin.com", roles = {"ADMIN"})
-    @Sql(scripts = "classpath:database/book/add-one-book.sql",
+    @Sql(scripts = {"classpath:database/category/delete-all-from-categories.sql",
+            "classpath:database/book/add-one-book.sql",
+            "classpath:database/category/add-one-category.sql"},
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    @Sql(scripts = "classpath:database/book/delete-all-from-books.sql",
+    @Sql(scripts = {"classpath:database/book/delete-all-from-books.sql",
+            "classpath:database/category/delete-all-from-categories.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void updateBook_ShouldUpdateAndReturnBook() throws Exception {
         CreateBookRequestDto updateDto = new CreateBookRequestDto();
