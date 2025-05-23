@@ -1,5 +1,8 @@
 package mate.academy.bookstoreprod.controller;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.security.test.web.servlet.setup.SecurityMockMvcConfigurers.springSecurity;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -15,7 +18,9 @@ import java.math.BigDecimal;
 import java.util.Set;
 import mate.academy.bookstoreprod.dto.book.BookDto;
 import mate.academy.bookstoreprod.dto.book.CreateBookRequestDto;
-import org.junit.jupiter.api.Assertions;
+import mate.academy.bookstoreprod.exception.EntityAlreadyExistsException;
+import mate.academy.bookstoreprod.exception.EntityNotFoundException;
+import mate.academy.bookstoreprod.util.TestUtil;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,15 +44,16 @@ public class BookControllerTest {
     private static final BigDecimal BOOK_PRICE = BigDecimal.valueOf(200);
     private static final String BOOK_TITLE = "Book Title";
     private static final Long CATEGORY_ID = 1L;
+    private static final Long NONEXISTING_ID = 9999L;
     private static final String SEARCH_AUTHOR = "John";
     private static final String SEARCH_TITLE = "Book";
-    private static final String UPDATED_AUTHOR = "Updated Author";
+    private static final String UPDATED_AUTHOR = "New Author";
     private static final String UPDATED_DESCRIPTION = "Updated Description";
-    private static final String UPDATED_ISBN = "9876543210";
-    private static final BigDecimal UPDATED_PRICE = BigDecimal.valueOf(300);
-    private static final String UPDATED_TITLE = "Updated Title";
+    private static final String UPDATED_TITLE = "NEW TITLE";
     private static final String URI = "/books";
     private static final String URI_WITH_ID = "/books/{id}";
+
+    private final TestUtil testUtil = new TestUtil();
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -89,6 +95,36 @@ public class BookControllerTest {
     }
 
     @Test
+    @WithMockUser(username = "admin@admin.com", roles = {"ADMIN"})
+    @Sql(scripts = {"classpath:database/category/add-one-category.sql",
+            "classpath:database/book/add-one-book.sql" },
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/book/delete-all-from-books.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void save_BookAlreadyExists_ThrowsEntityAlreadyExistsException() throws Exception {
+        CreateBookRequestDto createBookRequestDto = new CreateBookRequestDto();
+        String duplicateIsbn = "ISBN1241423456";
+        createBookRequestDto.setAuthor(BOOK_AUTHOR);
+        createBookRequestDto.setTitle(BOOK_TITLE);
+        createBookRequestDto.setDescription(BOOK_DESCRIPTION);
+        createBookRequestDto.setIsbn(duplicateIsbn);
+        createBookRequestDto.setPrice(BOOK_PRICE);
+        createBookRequestDto.setCategories(Set.of(CATEGORY_ID));
+
+        String jsonRequest = objectMapper.writeValueAsString(createBookRequestDto);
+
+        mockMvc.perform(post(URI)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                .andExpect(status().isConflict())
+                .andExpect(result -> assertInstanceOf(EntityAlreadyExistsException.class,
+                        result.getResolvedException()))
+                .andExpect(result ->
+                        assertEquals("Book with isbn " + duplicateIsbn + " already exists",
+                                result.getResolvedException().getMessage()));
+    }
+
+    @Test
     @WithMockUser(username = "user@user.com", roles = {"USER"})
     @Sql(scripts = {"classpath:database/category/delete-all-from-categories.sql",
             "classpath:database/book/add-three-books.sql"},
@@ -107,11 +143,11 @@ public class BookControllerTest {
 
         JsonNode jsonNode = objectMapper.readTree(result.getResponse().getContentAsByteArray());
         BookDto[] actual = objectMapper.treeToValue(jsonNode.get("content"), BookDto[].class);
-        Assertions.assertNotNull(actual);
-        Assertions.assertEquals(3, actual.length);
-        Assertions.assertEquals(1, actual[0].getId());
-        Assertions.assertEquals("Clean Code", actual[1].getTitle());
-        Assertions.assertEquals("Brian Goetz", actual[2].getAuthor());
+        assertNotNull(actual);
+        assertEquals(3, actual.length);
+        assertEquals(1, actual[0].getId());
+        assertEquals("Clean Code", actual[1].getTitle());
+        assertEquals("Brian Goetz", actual[2].getAuthor());
     }
 
     @Test
@@ -129,10 +165,24 @@ public class BookControllerTest {
         BookDto savedBookDto = objectMapper.readValue(result.getResponse().getContentAsString(),
                 BookDto.class);
 
-        Assertions.assertNotNull(savedBookDto);
-        Assertions.assertNotNull(savedBookDto.getId());
-        Assertions.assertEquals("Clean Code", savedBookDto.getTitle());
-        Assertions.assertEquals("Robert Martin", savedBookDto.getAuthor());
+        assertNotNull(savedBookDto);
+        assertNotNull(savedBookDto.getId());
+        assertEquals("Clean Code", savedBookDto.getTitle());
+        assertEquals("Robert Martin", savedBookDto.getAuthor());
+    }
+
+    @Test
+    @WithMockUser(username = "user@user.com", roles = {"USER"})
+    @Sql(scripts = "classpath:database/book/add-one-book.sql",
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = "classpath:database/book/delete-all-from-books.sql",
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void getBookById_InvalidId_ThrowsEntityNotFoundException() throws Exception {
+        mockMvc.perform(get(URI_WITH_ID, NONEXISTING_ID))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertInstanceOf(EntityNotFoundException.class,
+                        result.getResolvedException()))
+                .andReturn();
     }
 
     @Test
@@ -158,14 +208,8 @@ public class BookControllerTest {
     @Sql(scripts = {"classpath:database/book/delete-all-from-books.sql",
             "classpath:database/category/delete-all-from-categories.sql"},
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
-    public void updateBook_ShouldUpdateAndReturnBook() throws Exception {
-        CreateBookRequestDto updateDto = new CreateBookRequestDto();
-        updateDto.setAuthor(UPDATED_AUTHOR);
-        updateDto.setTitle(UPDATED_TITLE);
-        updateDto.setDescription(UPDATED_DESCRIPTION);
-        updateDto.setIsbn(UPDATED_ISBN);
-        updateDto.setPrice(UPDATED_PRICE);
-        updateDto.setCategories(Set.of(CATEGORY_ID));
+    public void updateBook_ValidInput_ShouldUpdateAndReturnBook() throws Exception {
+        CreateBookRequestDto updateDto = testUtil.getUpdateCreateBookRequestDto();
 
         String jsonRequest = objectMapper.writeValueAsString(updateDto);
 
@@ -176,6 +220,29 @@ public class BookControllerTest {
                 .andExpect(jsonPath("$.title").value(UPDATED_TITLE))
                 .andExpect(jsonPath("$.author").value(UPDATED_AUTHOR))
                 .andExpect(jsonPath("$.description").value(UPDATED_DESCRIPTION));
+    }
+
+    @Test
+    @WithMockUser(username = "admin@admin.com", roles = {"ADMIN"})
+    @Sql(scripts = {"classpath:database/category/delete-all-from-categories.sql",
+            "classpath:database/book/add-one-book.sql",
+            "classpath:database/category/add-one-category.sql"},
+            executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    @Sql(scripts = {"classpath:database/book/delete-all-from-books.sql",
+            "classpath:database/category/delete-all-from-categories.sql"},
+            executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+    public void updateBook_NonexistingId_ThrowsEntityNotFoundException() throws Exception {
+        CreateBookRequestDto updateDto = testUtil.getUpdateCreateBookRequestDto();
+
+        String jsonRequest = objectMapper.writeValueAsString(updateDto);
+
+        mockMvc.perform(put(URI_WITH_ID, NONEXISTING_ID)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(jsonRequest))
+                .andExpect(status().isNotFound())
+                .andExpect(result -> assertInstanceOf(EntityNotFoundException.class,
+                        result.getResolvedException()))
+                .andReturn();
     }
 
     @Test
