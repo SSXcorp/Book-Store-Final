@@ -122,7 +122,7 @@ public class CategoryControllerTest {
             executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     public void getCategoryById_ValidId_ShouldReturnCategory() throws Exception {
         mockMvc.perform(
-                get(URI_WITH_ID, ONE))
+                        get(URI_WITH_ID, ONE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(ONE))
                 .andExpect(jsonPath("$.name").value(TRAVEL_NAME));
@@ -159,5 +159,3 @@ public class CategoryControllerTest {
                 .andExpect(status().isNotFound());
     }
 }
-
-
