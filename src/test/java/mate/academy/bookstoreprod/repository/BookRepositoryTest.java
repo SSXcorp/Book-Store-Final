@@ -19,6 +19,11 @@ import org.springframework.test.context.jdbc.Sql;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 public class BookRepositoryTest {
+    private static final Long ONE = 1L;
+    private static final Long THREE = 3L;
+    private static final Long TWO = 2L;
+    private static final Integer ZERO = 0;
+    private static final Integer TEN = 10;
 
     @Autowired
     private BookRepository bookRepository;
@@ -33,12 +38,11 @@ public class BookRepositoryTest {
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findByIsbn_WithValidIsbn_ReturnsBookOptional() {
         String expectedIsbn = "ISBN1241423456";
-        Long expectedId = 1L;
 
         Optional<Book> actualBook = bookRepository.findByIsbn(expectedIsbn);
 
         assertTrue(actualBook.isPresent(), "Book should be present");
-        assertEquals(expectedId, actualBook.get().getId(),
+        assertEquals(ONE, actualBook.get().getId(),
                 "The ids of books should be the same");
         assertEquals(expectedIsbn, actualBook.get().getIsbn(),
                 "The isbn of books should be the same");
@@ -101,11 +105,10 @@ public class BookRepositoryTest {
     @Sql(scripts = "classpath:database/book/delete-all-from-books.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     void deleteById_WithValidId_VoidReturn() {
-        Long id = 1L;
-        bookRepository.deleteById(id);
+        bookRepository.deleteById(ONE);
 
-        assertFalse(bookRepository.existsById(id),
-                "Expected book with id: " + id + " to be deleted");
+        assertFalse(bookRepository.existsById(ONE),
+                "Expected book with id: " + ONE + " to be deleted");
     }
 
     @Test
@@ -117,9 +120,9 @@ public class BookRepositoryTest {
     @Sql(scripts = "classpath:database/book/delete-all-from-books.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAll_WithThreeBooksInDatabase_ReturnsThreeBooks() {
-        Page<Book> actual = bookRepository.findAll(PageRequest.of(0, 10));
+        Page<Book> actual = bookRepository.findAll(PageRequest.of(ZERO, TEN));
 
-        assertEquals(3, actual.getTotalElements(),
+        assertEquals(THREE, actual.getTotalElements(),
                 "Expected elements with category id 2: 3, but actual: "
                         + actual.getTotalElements());
     }
@@ -134,9 +137,9 @@ public class BookRepositoryTest {
     @Sql(scripts = "classpath:database/book/delete-all-from-books.sql",
             executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
     public void findAllByCategories_id_WithValidCategoryId_ReturnsThreeMatchingBooks() {
-        Page<Book> actual = bookRepository.findAllByCategories_id(2L, PageRequest.of(0, 10));
+        Page<Book> actual = bookRepository.findAllByCategories_id(TWO, PageRequest.of(ZERO, TEN));
 
-        assertEquals(3, actual.getTotalElements(),
+        assertEquals(THREE, actual.getTotalElements(),
                 "Expected elements with category id 2: 3, but actual: "
                         + actual.getTotalElements());
     }

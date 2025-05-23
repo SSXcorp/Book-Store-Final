@@ -18,6 +18,7 @@ import mate.academy.bookstoreprod.mapper.CategoryMapper;
 import mate.academy.bookstoreprod.model.Category;
 import mate.academy.bookstoreprod.repository.category.CategoryRepository;
 import mate.academy.bookstoreprod.service.category.CategoryServiceImpl;
+import mate.academy.bookstoreprod.util.TestUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -38,6 +39,8 @@ public class CategoryServiceTest {
     private static final int TEN = 10;
     private static final int ZERO = 0;
 
+    private final TestUtil testUtil = new TestUtil();
+
     @Mock
     private CategoryRepository categoryRepository;
 
@@ -51,9 +54,9 @@ public class CategoryServiceTest {
     @DisplayName("Verify all categories; return pageable")
     public void findAll_Valid_ReturnsPageableCategoryDto() {
         Pageable pageable = PageRequest.of(ONE.intValue(), TEN);
-        Category category = getCategory();
+        Category category = testUtil.getCategory();
         Page<Category> categoryPage = new PageImpl<>(List.of(category));
-        CategoryDto categoryDto = getCategoryDto();
+        CategoryDto categoryDto = testUtil.getCategoryDto();
 
         when(categoryRepository.findAll(pageable)).thenReturn(categoryPage);
         when(categoryMapper.toCategoryDto(category)).thenReturn(categoryDto);
@@ -69,8 +72,8 @@ public class CategoryServiceTest {
     @Test
     @DisplayName("Verify category returns by valid ID")
     public void getById_WithValidId_ReturnsCategoryDto() {
-        Category category = getCategory();
-        CategoryDto categoryDto = getCategoryDto();
+        Category category = testUtil.getCategory();
+        CategoryDto categoryDto = testUtil.getCategoryDto();
 
         when(categoryRepository.findById(ONE)).thenReturn(Optional.of(category));
         when(categoryMapper.toCategoryDto(category)).thenReturn(categoryDto);
@@ -95,9 +98,9 @@ public class CategoryServiceTest {
     @Test
     @DisplayName("Verify category saves and returns DTO with valid input")
     public void save_WithValidInput_ReturnsCategoryDto() {
-        CreateCategoryDto createDto = getCreateCategoryDto();
-        Category category = getCategory();
-        CategoryDto categoryDto = getCategoryDto();
+        CreateCategoryDto createDto = testUtil.getCreateCategoryDto();
+        Category category = testUtil.getCategory();
+        CategoryDto categoryDto = testUtil.getCategoryDto();
 
         when(categoryRepository.existsByName(createDto.getName())).thenReturn(false);
         when(categoryRepository.save(any(Category.class))).thenReturn(category);
@@ -115,7 +118,7 @@ public class CategoryServiceTest {
     @Test
     @DisplayName("Throws EntityAlreadyExistsException when saving duplicate category name")
     public void save_WithDuplicateName_ThrowsEntityAlreadyExistsException() {
-        CreateCategoryDto createDto = getCreateCategoryDto();
+        CreateCategoryDto createDto = testUtil.getCreateCategoryDto();
 
         when(categoryRepository.existsByName(CATEGORY_NAME)).thenReturn(true);
 
@@ -137,7 +140,7 @@ public class CategoryServiceTest {
         updatedDto.setId(ONE);
         updatedDto.setName(UPDATED_CATEGORY_NAME);
 
-        Category existing = getCategory();
+        Category existing = testUtil.getCategory();
 
         when(categoryRepository.findById(ONE)).thenReturn(Optional.of(existing));
         when(categoryRepository.save(existing)).thenReturn(updated);
@@ -173,25 +176,4 @@ public class CategoryServiceTest {
 
         verify(categoryRepository).deleteById(ONE);
     }
-
-    private Category getCategory() {
-        Category category = new Category();
-        category.setId(ONE);
-        category.setName(CATEGORY_NAME);
-        return category;
-    }
-
-    private CategoryDto getCategoryDto() {
-        CategoryDto dto = new CategoryDto();
-        dto.setId(ONE);
-        dto.setName(CATEGORY_NAME);
-        return dto;
-    }
-
-    private CreateCategoryDto getCreateCategoryDto() {
-        CreateCategoryDto dto = new CreateCategoryDto();
-        dto.setName(CATEGORY_NAME);
-        return dto;
-    }
 }
-

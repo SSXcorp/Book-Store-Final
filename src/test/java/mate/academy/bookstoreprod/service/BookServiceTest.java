@@ -9,7 +9,6 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -25,6 +24,7 @@ import mate.academy.bookstoreprod.model.Category;
 import mate.academy.bookstoreprod.repository.book.BookRepository;
 import mate.academy.bookstoreprod.repository.book.BookSpecificationBuilder;
 import mate.academy.bookstoreprod.service.book.BookServiceImpl;
+import mate.academy.bookstoreprod.util.TestUtil;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -39,8 +39,6 @@ import org.springframework.data.jpa.domain.Specification;
 
 @ExtendWith(MockitoExtension.class)
 public class BookServiceTest {
-    private static final String AUTHOR = "Author";
-    private static final String CATEGORY_NAME = "Action category";
     private static final String ISBN = "1234567890";
     private static final String JAVA = "Java";
     private static final String NATURE = "Nature";
@@ -50,10 +48,9 @@ public class BookServiceTest {
     private static final int TEN = 10;
     private static final String TITLE = "title";
     private static final Long TWO = 2L;
-    private static final Long TWO_HUNDRED = 200L;
-    private static final String UPDATE_AUTHOR = "New Author";
-    private static final String UPDATE_TITLE = "NEW TITLE";
     private static final int ZERO = 0;
+
+    private final TestUtil testUtil = new TestUtil();
 
     @Mock
     private BookRepository bookRepository;
@@ -90,9 +87,9 @@ public class BookServiceTest {
             Verify BookDto returns by given valid id
             """)
     public void findById_WithValidId_ReturnsBookDto() {
-        Book book = getBook();
+        Book book = testUtil.getBook();
 
-        BookDto bookDto = getBookDto();
+        BookDto bookDto = testUtil.getBookDto();
 
         when(bookRepository.findById(ONE)).thenReturn(Optional.of(book));
         when(bookMapper.toBookDto(any(Book.class))).thenReturn(bookDto);
@@ -120,11 +117,11 @@ public class BookServiceTest {
             Verify Book saves, BookDto returns with given valid input
             """)
     public void save_WithValidInput_ReturnsBookDto() {
-        CreateBookRequestDto dto = getCreateBookRequestDto();
+        CreateBookRequestDto dto = testUtil.getCreateBookRequestDto();
 
-        Book saved = getBook();
+        Book saved = testUtil.getBook();
 
-        BookDto savedDto = getBookDto();
+        BookDto savedDto = testUtil.getBookDto();
 
         when(bookRepository.existsByIsbn(dto.getIsbn())).thenReturn(false);
         when(bookRepository.save(any(Book.class))).thenReturn(saved);
@@ -145,7 +142,7 @@ public class BookServiceTest {
             Throws EntityExistsException when trying to save book with duplicate ISBN
             """)
     public void save_WithDuplicateIsbn_ThrowsEntityAlreadyExistsException() {
-        CreateBookRequestDto dto = getCreateBookRequestDto();
+        CreateBookRequestDto dto = testUtil.getCreateBookRequestDto();
 
         when(bookRepository.existsByIsbn(ISBN)).thenReturn(true);
 
@@ -158,28 +155,10 @@ public class BookServiceTest {
             Verify updated BookDto returns by valid input
             """)
     public void updateById_WithValidInput_ReturnsBookDto() {
-        CreateBookRequestDto toUpdateDto = new CreateBookRequestDto();
-        toUpdateDto.setTitle(UPDATE_TITLE);
-        toUpdateDto.setAuthor(UPDATE_AUTHOR);
-        toUpdateDto.setIsbn(ISBN);
-        toUpdateDto.setPrice(BigDecimal.valueOf(TWO_HUNDRED));
-        toUpdateDto.setCategories(Set.of(ONE));
-
-        Book updated = new Book();
-        updated.setId(ONE);
-        updated.setTitle(UPDATE_TITLE);
-        updated.setAuthor(UPDATE_AUTHOR);
-        updated.setPrice(BigDecimal.valueOf(TWO_HUNDRED));
-        updated.setCategories(Set.of(new Category()));
-
-        BookDto updatedDto = new BookDto();
-        updatedDto.setId(ONE);
-        updatedDto.setTitle(UPDATE_TITLE);
-        updatedDto.setAuthor(UPDATE_AUTHOR);
-        updatedDto.setPrice(BigDecimal.valueOf(TWO_HUNDRED));
-        updatedDto.setCategories(Set.of(ONE));
-
-        Book existing = getBook();
+        CreateBookRequestDto toUpdateDto = testUtil.getUpdateCreateBookRequestDto();
+        Book updated = testUtil.getUpdatedBook();
+        BookDto updatedDto = testUtil.getUpdatedBookDto();
+        Book existing = testUtil.getBook();
 
         when(bookRepository.findById(ONE)).thenReturn(Optional.of(existing));
         when(bookRepository.save(any(Book.class))).thenReturn(updated);
@@ -200,7 +179,7 @@ public class BookServiceTest {
             """)
     public void updateById_WithInvalidId_ThrowsEntityNotFoundException() {
         Long invalidId = NONEXISTING_ID;
-        CreateBookRequestDto dto = getCreateBookRequestDto();
+        CreateBookRequestDto dto = testUtil.getCreateBookRequestDto();
 
         when(bookRepository.findById(invalidId)).thenReturn(Optional.empty());
 
@@ -216,12 +195,12 @@ public class BookServiceTest {
         BookSearchParametersDto searchParams = new BookSearchParametersDto();
         searchParams.setTitle(new String[]{JAVA, SPRING});
 
-        Book book1 = new Book();
-        book1.setTitle(JAVA);
-        Book book2 = new Book();
-        book2.setTitle(SPRING);
-        Book book3 = new Book();
-        book3.setTitle(NATURE);
+        Book javaBook = new Book();
+        javaBook.setTitle(JAVA);
+        Book springBook = new Book();
+        springBook.setTitle(SPRING);
+        Book natureBook = new Book();
+        natureBook.setTitle(NATURE);
 
         BookDto bookDto1 = new BookDto();
         bookDto1.setTitle(JAVA);
@@ -229,7 +208,7 @@ public class BookServiceTest {
         bookDto2.setTitle(SPRING);
 
         Pageable pageable = PageRequest.of(ZERO, TEN);
-        Page<Book> books = new PageImpl<>(List.of(book1, book2));
+        Page<Book> books = new PageImpl<>(List.of(javaBook, springBook));
 
         Specification<Book> titleSpecification =
                 Specification.where((root,
@@ -239,8 +218,8 @@ public class BookServiceTest {
 
         when(bookRepository.findAll(any(Specification.class), eq(pageable))).thenReturn(books);
         when(bookSpecificationBuilder.build(any())).thenReturn(titleSpecification);
-        when(bookMapper.toBookDto(book1)).thenReturn(bookDto1);
-        when(bookMapper.toBookDto(book2)).thenReturn(bookDto2);
+        when(bookMapper.toBookDto(javaBook)).thenReturn(bookDto1);
+        when(bookMapper.toBookDto(springBook)).thenReturn(bookDto2);
 
         Page<BookDto> result = bookServiceImpl.search(searchParams, pageable);
 
@@ -256,11 +235,11 @@ public class BookServiceTest {
             """)
     public void findAllByCategoryId_WithValidId_ReturnsAllBookDtoWithoutCategoryIdsPageable() {
         Pageable pageable = PageRequest.of(ZERO, TEN);
-        Category category = getCategoryWithIdOne();
+        Category category = testUtil.getCategoryWithIdOne();
 
-        Book bookOne = getBook();
+        Book bookOne = testUtil.getBook();
         bookOne.setCategories(Set.of(category));
-        Book bookTwo = getBook();
+        Book bookTwo = testUtil.getBook();
         bookTwo.setCategories(Set.of(category));
 
         Page<Book> books = new PageImpl<>(List.of(bookOne, bookTwo));
@@ -272,43 +251,5 @@ public class BookServiceTest {
         assertNotNull(result);
         assertEquals(result.getTotalElements(), TWO);
         verify(bookRepository).findAllByCategories_id(ONE, pageable);
-    }
-
-    private CreateBookRequestDto getCreateBookRequestDto() {
-        CreateBookRequestDto dto = new CreateBookRequestDto();
-        dto.setTitle(TITLE);
-        dto.setAuthor(AUTHOR);
-        dto.setIsbn(ISBN);
-        dto.setPrice(BigDecimal.TEN);
-        dto.setCategories(Set.of(ONE));
-        return dto;
-    }
-
-    private Book getBook() {
-        Book book = new Book();
-        book.setId(ONE);
-        book.setTitle(TITLE);
-        book.setAuthor(AUTHOR);
-        book.setIsbn(ISBN);
-        book.setPrice(BigDecimal.TEN);
-        book.setCategories(Set.of(new Category()));
-        return book;
-    }
-
-    private Category getCategoryWithIdOne() {
-        Category category = new Category();
-        category.setId(ONE);
-        category.setName(CATEGORY_NAME);
-        return category;
-    }
-
-    private BookDto getBookDto() {
-        BookDto bookDto = new BookDto();
-        bookDto.setId(ONE);
-        bookDto.setTitle(TITLE);
-        bookDto.setAuthor(AUTHOR);
-        bookDto.setPrice(BigDecimal.TEN);
-        bookDto.setCategories(Set.of(ONE));
-        return bookDto;
     }
 }
