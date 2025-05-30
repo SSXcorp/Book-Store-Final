@@ -13,6 +13,20 @@
 [![doc](https://img.shields.io/badge/documented-Swagger-f8a033)](#)
 [![Free](https://img.shields.io/badge/free_for_non_commercial_use-brightgreen)](#)
 
+## :page_with_curl: Sections:
+
+* [Contacts](#telephone_receiver-contacts)
+* [Shared links](#link-shared-links)
+* [Introduction](#mag-introduction)
+* [Technologies Stack](#floppy_disk-technologies-stack)
+* [Architecture Overview](#memo-architecture-overview)
+* [Endpoints](#round_pushpin-endpoints)
+* [Database Schema Relationship Diagram](#dart-database-schema-relationship-diagram)
+* [Postman collections](#postman-collections)
+* [How to Clone and Run the Project](#-how-to-clone-and-run-the-project)
+
+---
+
 ## :telephone_receiver: Contacts:
 [![My Skills](https://skillicons.dev/icons?i=gmail)](mailto:bohdandimov94@gmail.com)
 [![My Skills](https://skillicons.dev/icons?i=github)](https://github.com/SSXcorp)
@@ -28,19 +42,6 @@
 1. [Swagger link](http://ec2-3-88-178-6.compute-1.amazonaws.com/swagger-ui/index.html#/)
 2. [GitHub project](https://github.com/SSXcorp/Book-Store-Final)
 3. [Public Postman application endpoints for tests](https://www.postman.com/starlight-ssx/bookstorepublic/collection/kqn67j5/bookstoreapp?action=share&creator=17715692)
-
----
-
-## :page_with_curl: Sections:
-
-* [Contacts](#telephone_receiver-contacts)
-* [Shared links](#link-shared-links)
-* [Introduction](#mag-introduction)
-* [Technologies Stack](#floppy_disk-technologies-stack)
-* [Architecture Overview](#memo-architecture-overview)
-* [Endpoints](#round_pushpin-endpoints)
-* [Database Schema Relationship Diagram](#dart-database-schema-relationship-diagram)
-* [Postman collections](#postman-collections)
 
 ---
 
@@ -160,6 +161,57 @@ PostmanLink : [link](https://www.postman.com/starlight-ssx/bookstorepublic/colle
 Swagger should be accessible all the time (similar like on a screenshot):
 ![SwaggerScr.jpg](src/main/resources/images/SwaggerScr.jpg)
 
+
+## 📥 How to Clone and Run the Project
+Follow these steps to clone the project from GitHub and run it on your local machine:
+
+1️⃣ Clone the Repository
+Open your terminal or command prompt, and run the following commands:
+
+```
+git clone https://github.com/SSXcorp/Book-Store-Final.git
+cd Book-Store-Final
+
+```
+
+2️⃣ Make sure you have the following installed:
+```
+Java JDK (version 17 or higher recommended)
+
+Maven (for building and running the project)
+
+MySQL
+
+```
+
+You chn check this using cmd commands:
+
+```
+java --version
+mvn --version
+mysql --version
+
+```
+
+3️⃣ Configure the Database
+Check the `src/main/resources/application.properties` file for database configuration and adjust the database credentials in application.properties.
+
+```
+spring.datasource.url=jdbc:mysql://localhost:3306/bookstore
+spring.datasource.username=your_mysql_user
+spring.datasource.password=your_mysql_password
+
+```
+
+4️⃣ Build and Run the Application
+Run the following commands in the project directory:
+
+```
+mvn clean package
+mvn spring-boot:run
+
+```
+
 ## Recommendations while using
 
 ### Docker
@@ -167,7 +219,7 @@ Swagger should be accessible all the time (similar like on a screenshot):
 > [!WARNING]
 > If you are trying to create docker image for application do not forget to change your .env parameters:
 
-.env file should be like this:
+.env file should look like this:
 ```
 MYSQL_USER=appuser
 MYSQL_PASSWORD=your_password
@@ -187,7 +239,7 @@ DEBUG_PORT=5005
 
 ### Checkstyle plugin
 
-> [!INFO]
+> [!NOTE]
 > Checkstyle plugin is present in the application. Plugin section should be the same as given below. If you encounter an issue with checkstyle plugin try to perform "mvn clean package" command
 
 ```
