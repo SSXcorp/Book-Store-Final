@@ -235,37 +235,6 @@ DEBUG_PORT=5005
 > [!WARNING]
 > In case you are not using Docker compose instead of Kubernetes don't forget to specify correct platform parameter. In my case platform: linux/amd64
 
-### Checkstyle plugin
-
-> [!NOTE]
-> Checkstyle plugin is present in the application. Plugin section should be the same as given below. If you encounter an issue with checkstyle plugin try to perform "mvn clean package" command
-
-```
-<plugin>
-    <groupId>org.apache.maven.plugins</groupId>
-    <artifactId>maven-checkstyle-plugin</artifactId>
-    <version>3.3.0</version>
-    <executions>
-        <execution>
-            <phase>compile</phase>
-            <goals>
-                <goal>check</goal>
-            </goals>
-        </execution>
-    </executions>
-    <configuration>
-        <configLocation>${maven.checkstyle.plugin.configLocation}</configLocation>
-        <consoleOutput>true</consoleOutput>
-        <failsOnError>true</failsOnError>
-        <linkXRef>false</linkXRef>
-        <sourceDirectories>
-            <sourceDirectory>${project.build.sourceDirectory}</sourceDirectory>
-            <sourceDirectory>${project.build.testSourceDirectory}</sourceDirectory>
-        </sourceDirectories>
-    </configuration>
-</plugin>
-```
-
 ---
 
 **I appreciate your time viewing my project. In case of ideas on how to improve the project or find bugs/errors, as well as suggestions to join other projects, you can contact me by mail:
